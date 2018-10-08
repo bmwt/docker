@@ -1,12 +1,16 @@
 version: "3"
 
+volumes:
+  grafana_data: {}
+  influxdb_data: {}
+
 services:
 
  influxdb:
   container_name: influxdb
   image: influxdb:latest
   volumes:
-   - /data/influxdb:/var/lib/influxdb
+   - influxdb_data:/var/lib/influxdb
 
  grafana:
   container_name: grafana
@@ -14,7 +18,8 @@ services:
   ports:
    - "3000:3000"
   volumes:
-   - /data/grafana:/var/lib/grafana
+   - grafana_data:/var/lib/grafana
+   - ./grafana/provisioning/:/etc/grafana/provisioning/
   links:
    - influxdb
 
@@ -22,7 +27,7 @@ services:
   container_name: telegraf
   image: telegraf:latest
   volumes:
-  - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+  - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
   links:
   - influxdb
 
