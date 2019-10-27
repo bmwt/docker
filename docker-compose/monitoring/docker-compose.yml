@@ -1,0 +1,53 @@
+version: "2"
+services:
+  influxdb:
+    image: influxdb
+    container_name: influxdb
+    restart: always
+#    environment:
+#      INFLUXDB_HTTP_AUTH_ENABLED: "true"
+#      INFLUXDB_ADMIN: "admin"
+#      INFLUXDB_ADMIN_PASSWORD: "allhailbrak"
+    ports:
+      - 8086:8086
+    networks:
+      - monitoring
+    volumes:
+      - influxdb-volume:/var/lib/influxdb
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: always
+    ports:
+      - 3000:3000
+    networks:
+      - monitoring
+    volumes:
+      - grafana-volume:/var/lib/grafana  
+  mqtt:
+    image: eclipse-mosquitto
+    container_name: mqtt
+    restart: always
+    ports:
+      - 1883:1883
+    networks:
+      - monitoring
+    volumes:
+      - mosquitto-volume:/mosquitto/data
+  mqtt2influxdb:
+    build: ./mqtt2influxdb
+    restart: always
+    networks:
+      - monitoring
+      
+networks:
+  monitoring:
+
+volumes:
+  influxdb-volume:
+    external: true
+  grafana-volume:
+    external: true
+  mosquitto-volume:
+    external: true
+    
