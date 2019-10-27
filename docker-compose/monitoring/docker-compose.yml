@@ -7,7 +7,7 @@ services:
 #    environment:
 #      INFLUXDB_HTTP_AUTH_ENABLED: "true"
 #      INFLUXDB_ADMIN: "admin"
-#      INFLUXDB_ADMIN_PASSWORD: "allhailbrak"
+#      INFLUXDB_ADMIN_PASSWORD: "changeme"
     ports:
       - 8086:8086
     networks:
